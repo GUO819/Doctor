@@ -5,12 +5,16 @@ import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+
+import com.fz.ribeile.http.HttpManager;
+import com.fz.ribeile.http.HttpUrl;
 
 /**
  * @author: Guo
@@ -35,4 +39,16 @@ public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompat
     public abstract void initView();
     public abstract void initListener();
     public abstract void initData();
+
+    public HttpUrl getHttpService(){
+        return HttpManager.getInstance().getService();
+    }
+
+    public void setText(TextView tv,String content){
+        tv.setText(content);
+    }
+
+    public void setVisibility(View v,Boolean flag){
+        v.setVisibility(flag?View.GONE:View.VISIBLE);
+    }
 }

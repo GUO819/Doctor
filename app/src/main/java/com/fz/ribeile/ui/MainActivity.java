@@ -1,10 +1,15 @@
-package com.fz.ribeile;
+package com.fz.ribeile.ui;
 
+import com.fz.ribeile.R;
 import com.fz.ribeile.base.BaseActivity;
-import com.fz.ribeile.databinding.ActivityMainBinding;
+import com.fz.ribeile.databinding.ActivityMainBindingImpl;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> {
-
+/**
+ * @author: Guo
+ * @date: 2021/1/4
+ * @describe:
+ */
+public class MainActivity extends BaseActivity<ActivityMainBindingImpl> {
     @Override
     public int initViewLayout() {
         return R.layout.activity_main;
@@ -12,7 +17,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     public void initView() {
-        dataBinding.tv.setText("郭金沂");
+
     }
 
     @Override
