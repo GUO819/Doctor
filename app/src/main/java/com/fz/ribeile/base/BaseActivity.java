@@ -16,12 +16,14 @@ import androidx.databinding.ViewDataBinding;
 import com.fz.ribeile.http.HttpManager;
 import com.fz.ribeile.http.HttpUrl;
 
+import me.jessyan.autosize.internal.CustomAdapt;
+
 /**
  * @author: Guo
  * @date: 2021/1/3
  * @describe:
  */
-public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompatActivity implements CustomAdapt {
     protected VD dataBinding;
 
     @Override
@@ -50,5 +52,16 @@ public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompat
 
     public void setVisibility(View v,Boolean flag){
         v.setVisibility(flag?View.GONE:View.VISIBLE);
+    }
+
+
+    @Override
+    public boolean isBaseOnWidth() {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp() {
+        return 667;
     }
 }
