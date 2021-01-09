@@ -1,11 +1,11 @@
-package com.fz.ribeile.http;
+package com.fz.lbl_admin.http;
 
-import android.util.AndroidException;
+import java.io.IOException;
 
-import com.google.gson.Gson;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -20,7 +20,7 @@ public class HttpManager {
     /**
      * 外网测试环境
      */
-    private final String url = "http://118.178.180.86:9001/";
+    private final String url = "http://118.178.180.86:9001";
 //    private String url = "";//生产环境
 
 
@@ -31,9 +31,22 @@ public class HttpManager {
     private HttpManager(){
         okHttp = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request();
+                        Request.Builder builder = request.newBuilder();
+                        builder.addHeader("Content-Type","application/json");
+                        builder.addHeader("Accept","application/json");
+                        Request build = builder.build();
+                        return chain.proceed(build);
+                    }
+
+                })
                 .build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(url)
+                .client(okHttp)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

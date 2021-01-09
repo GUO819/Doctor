@@ -1,11 +1,21 @@
-package com.fz.ribeile.ui.login;
+package com.fz.lbl_admin.ui.login;
 
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
-import com.fz.ribeile.R;
-import com.fz.ribeile.base.BaseActivity;
-import com.fz.ribeile.databinding.ActivityLoginBinding;
+import com.fz.lbl_admin.R;
+import com.fz.lbl_admin.base.BaseActivity;
+import com.fz.lbl_admin.bean.LoginBean;
+import com.fz.lbl_admin.databinding.ActivityLoginBinding;
+import com.fz.lbl_admin.util.IPath;
+import com.fz.lbl_admin.util.SpUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * @author: Guo
@@ -29,11 +39,37 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
 
     @Override
     public void initListener() {
+        dataBinding.btnLogin.setEnabled(true);
+        dataBinding.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("phone","18749178175");
+                jsonObject.addProperty("password","123.123.w");
+                RequestBody requestBody = RequestBody.create(jsonObject.toString(), MediaType.parse("application/json;charset=utf-8"));
+                getObservable(getHttpService().login(requestBody), new IDataListener() {
+                    @Override
+                    public <T> void success(T s) {
+                        LoginBean bean = (LoginBean) s;
+                        if(bean.code==200){
+                            Gson gson = new Gson();
+                            SpUtil.put(IPath.userData,gson.toJson(bean.result));
+                        }
+                        Toast.makeText(LoginActivity.this,bean.message, Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void error(String s) {
+                        Toast.makeText(LoginActivity.this,"网络请求失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void initData() {
+
 
     }
 

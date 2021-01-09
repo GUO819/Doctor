@@ -1,21 +1,24 @@
-package com.fz.ribeile.base;
+package com.fz.lbl_admin.base;
 
 import android.content.pm.ActivityInfo;
-import android.database.DatabaseUtils;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingComponent;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
-import com.fz.ribeile.http.HttpManager;
-import com.fz.ribeile.http.HttpUrl;
+import com.fz.lbl_admin.http.HttpManager;
+import com.fz.lbl_admin.http.HttpUrl;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
@@ -42,8 +45,37 @@ public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompat
     public abstract void initListener();
     public abstract void initData();
 
-    public HttpUrl getHttpService(){
+    protected HttpUrl getHttpService(){
         return HttpManager.getInstance().getService();
+    }
+
+    protected <T> void getObservable(Observable<T> observable, final IDataListener a){
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<T>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(T value) {
+                a.success(value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(BaseActivity.this, "请求错误，请检查", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+    public interface IDataListener{
+        <T> void success(T s);
+        void error(String s);
     }
 
     public void setText(TextView tv,String content){
