@@ -1,8 +1,13 @@
 package com.fz.lbl_admin.base;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +91,10 @@ public abstract class BaseActivity<VD extends ViewDataBinding> extends AppCompat
         v.setVisibility(flag?View.GONE:View.VISIBLE);
     }
 
+    public void jump(Class<?> activity){
+        Intent intent = new Intent(this, activity);
+        startActivity(intent);
+    }
 
     @Override
     public boolean isBaseOnWidth() {

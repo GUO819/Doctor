@@ -27,6 +27,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
     @Override
     public void initView() {
+        //全屏展示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         new Handler().postDelayed(new Runnable() {

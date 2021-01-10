@@ -54,6 +54,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
                         if(bean.code==200){
                             Gson gson = new Gson();
                             SpUtil.put(IPath.userData,gson.toJson(bean.result));
+
                         }
                         Toast.makeText(LoginActivity.this,bean.message, Toast.LENGTH_SHORT).show();
                     }
